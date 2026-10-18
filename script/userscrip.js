@@ -14,11 +14,16 @@
   "use strict";
 
   // selector to get the Meskanas convert button
-  const convertBtnSelector =
+  const convertBtnSpanSelector =
     ".local_bfaltformat-button_span.local-bfaltformat-course-page-icon";
+  const convertBtnSelector =
+    ".btn.btn-link.local-bfaltformat-access-button.theme-meskanas.toggle-modal";
+  const btnIconSelector = ".local-bfaltformat-access-icon.theme-meskanas.icon";
+
   const goServerUrl = "http://localhost:6767/request";
 
-  runWhenReady(convertBtnSelector, main);
+  // wait till the Meskanas buttons are ready
+  runWhenReady(convertBtnSpanSelector, main);
 
   function main() {
     const buttons = getConvertSpans();
@@ -28,17 +33,25 @@
       const parent = span.parentElement;
       parent.appendChild(clone);
 
-      var button = clone.querySelector(
-        ".btn.btn-link.local-bfaltformat-access-button.theme-meskanas.toggle-modal",
-      );
+      var icon = clone.querySelector(btnIconSelector);
+
+      // CREDIT: https://icons.getbootstrap.com/icons/lightning/
+      var newIconDiv = document.createElement("div");
+      newIconDiv.innerHTML =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">   <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z"/> </svg>';
+      const newIcon = newIconDiv.firstElementChild;
+      icon.replaceWith(newIcon);
+
+      var button = clone.querySelector(convertBtnSelector);
       button.addEventListener("click", function () {
         onConvertButtonClicked(span);
       });
     });
   }
 
+  // get the span parents of the Meskanas buttons
   function getConvertSpans() {
-    const btn = document.querySelectorAll(convertBtnSelector);
+    const btn = document.querySelectorAll(convertBtnSpanSelector);
     return Array.from(btn);
   }
 
@@ -48,11 +61,13 @@
       return;
     }
 
+    // find the href to the file to convert
     const parent = by.parentElement;
     const link = parent.firstElementChild;
     const href = link.href;
     const filename = href.replace(/^.*[\\/]/, "");
 
+    // download the file
     const resp = await fetch(href, { method: "GET" });
     const blob = await resp.blob();
 
@@ -60,10 +75,12 @@
     data.append("file", blob, filename);
 
     // BUG: Firefox doesnt support targetAddressSpace. Request silently
-    // fails without permissions for Local Network Access
+    // fails when macewan.ca does not have permissions for Local Network
+    // Access
     await fetch(goServerUrl, {
       method: "POST",
       body: data,
+      targetAddressSpace: "local",
     });
   }
 

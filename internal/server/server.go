@@ -36,6 +36,7 @@ func StartServer() {
 
 var methodAllowlist = []string{"POST", "OPTIONS"}
 
+// Erwin: Had an issue with the POST request due to this thing called CORS.
 // CREDIT: https://eli.thegreenplace.net/2023/introduction-to-cors-for-go-programmers/
 func checkCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
