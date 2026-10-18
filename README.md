@@ -37,8 +37,28 @@ go install
 
 ### Usage
 ```bash
+# cd into your directory where you want the converted file to go
+cd ~/Downloads/
+
+# run the server
 convert2pdf
 ```
+Then, go to your meskanas course page and click on the new lighting icon beside
+the original convert button.
+A browser popup will request permissions to allow access to local networks.
+Hit accept.
+If everything goes smoothly, you should see the terminal running convert2pdf
+output something like:
+```bash
+Converted files will be stored in /home/user/Downloads/test/
+Listening at localhost:6767
+================================================================
+2026/10/18 10:49:18 Processing: Powerpoint.pptx
+2026/10/18 10:49:22 Done: Powerpoint.pptx
+```
+and you will see your converted file in the same directory you ran `convert2pdf`
+on.
+
 
 ### Details
 This project consists of two parts. A userscript that you install on your
