@@ -59,6 +59,7 @@ func processRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// get the bytes from the request
 	file, header, err := r.FormFile("file")
 	if err != nil {
 		errors.PrintErrf("failed to form file: %s", err.Error())
@@ -68,6 +69,7 @@ func processRequest(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Processing: %s\n", header.Filename)
 
+	// then save to OS
 	outFile, err := os.Create(header.Filename)
 	if err != nil {
 		errors.PrintErrf("failed to create file: %s", err.Error())
@@ -84,6 +86,8 @@ func processRequest(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// runs soffice to convert the given file to a pdf in the current working
+// directory
 func convertToPdf(file string) error {
 	args := []string{"--headless", "--convert-to", "pdf", file}
 	cmd := exec.Command("soffice", args...)
