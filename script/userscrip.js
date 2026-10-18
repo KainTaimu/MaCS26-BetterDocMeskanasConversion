@@ -13,6 +13,9 @@
 (function () {
   "use strict";
 
+  const iconSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">   <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z"/> </svg>';
+
   // selector to get the Meskanas convert button
   const convertBtnSpanSelector =
     ".local_bfaltformat-button_span.local-bfaltformat-course-page-icon";
@@ -29,20 +32,19 @@
     const buttons = getConvertSpans();
     buttons.forEach((span) => {
       span.id = "";
-      var clone = span.cloneNode(true);
+      const clone = span.cloneNode(true);
       const parent = span.parentElement;
       parent.appendChild(clone);
 
-      var icon = clone.querySelector(btnIconSelector);
+      const icon = clone.querySelector(btnIconSelector);
 
       // CREDIT: https://icons.getbootstrap.com/icons/lightning/
-      var newIconDiv = document.createElement("div");
-      newIconDiv.innerHTML =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">   <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z"/> </svg>';
+      const newIconDiv = document.createElement("div");
+      newIconDiv.innerHTML = iconSvg;
       const newIcon = newIconDiv.firstElementChild;
       icon.replaceWith(newIcon);
 
-      var button = clone.querySelector(convertBtnSelector);
+      const button = clone.querySelector(convertBtnSelector);
       button.addEventListener("click", function () {
         onConvertButtonClicked(span);
       });
@@ -65,11 +67,20 @@
     const parent = by.parentElement;
     const link = parent.firstElementChild;
     const href = link.href;
-    const filename = href.replace(/^.*[\\/]/, "");
 
     // download the file
     const resp = await fetch(href, { method: "GET" });
     const blob = await resp.blob();
+
+    // CREDIT: https://stackoverflow.com/a/71195901
+    // get filename
+    const header = resp.headers.get("Content-Disposition");
+    var filename = header.split(/;(.+)/)[1].split(/=(.+)/)[1];
+    if (filename.toLowerCase().startsWith("utf-8''")) {
+      filename = decodeURIComponent(filename.replace(/utf-8''/i, ""));
+    } else {
+      filename = filename.replace(/['"]/g, "");
+    }
 
     var data = new FormData();
     data.append("file", blob, filename);
