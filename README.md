@@ -3,9 +3,17 @@
 ---
 
 ### Submission for MaCS Hackathon '26
-A reinvention of MacEwan's document conversion tool that takes too damn long to
-do its job. 
+Meskanas has a cool feature that lets you convert most proprietary documents that are harder
+to view on devices other than on desktop, ie: PowerPoint pptx, Word docx.
 
+But its so dog slow... So much so that they email you when its done converting,
+a few minutes after you requested it. 
+
+This project aims to provide a faster and more convenient way of doing the same
+job by adding a new button to the Meskanas page that converts the file locally
+on your device instead of whatever Meskanas is doing behind the scenes.
+
+Note that this is tested on Linux only. Not sure how it will work on Windows
 
 ### Prerequisites
 - LibreOffice
@@ -17,7 +25,7 @@ sudo apt install libreoffice
 sudo pacman -S libreoffice-still
 ```
 - A userscript manager
-    - I personally use (TamperMonkey)[https://www.tampermonkey.net/] on Firefox,
+    - I personally use [TamperMonkey](https://www.tampermonkey.net/) on Firefox,
     any other setup is untested!
 
 
