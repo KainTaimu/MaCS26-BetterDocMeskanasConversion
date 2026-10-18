@@ -47,7 +47,7 @@ Then, go to your meskanas course page and click on the new lighting icon beside
 the original convert button.
 A browser popup will request permissions to allow access to local networks.
 Hit accept.
-If everything goes smoothly, you should see the terminal running convert2pdf
+If everything goes smoothly, you should see the terminal running `convert2pdf`
 output something like:
 ```bash
 Converted files will be stored in /home/user/Downloads/test/
