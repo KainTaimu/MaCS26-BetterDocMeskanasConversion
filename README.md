@@ -2,6 +2,9 @@
 
 ---
 
+See the `submitted` branch for the version that was submitted to the MaCS
+Hackathon.
+
 ### Submission for MaCS Hackathon '26
 Meskanas has a cool feature that lets you convert most proprietary documents that are harder
 to view on devices other than on desktop, ie: PowerPoint pptx, Word docx.
